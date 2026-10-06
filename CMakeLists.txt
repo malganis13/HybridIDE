@@ -4,8 +4,12 @@
 # =============================================================================
 cmake_minimum_required(VERSION 3.20)
 
+# Статический CRT для MSVC: HybridIDE.exe запускается на чистой Windows 10/11
+# без установки Visual C++ Redistributable.
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
+
 project(HybridIDE
-    VERSION 0.1.0
+    VERSION 1.0.0
     DESCRIPTION "Universal hybrid C++ IDE: Dear ImGui + LSP + DAP + GitHub + shader themes"
     LANGUAGES C CXX)
 
@@ -112,10 +116,17 @@ endif()
 # ---- Графическое приложение -------------------------------------------------
 if(IDE_BUILD_APP)
     find_package(OpenGL REQUIRED)
+    set(IDE_PLATFORM_SOURCES)
+    if(WIN32)
+        # Версия файла, иконка-манифест: PerMonitorV2 DPI, UTF-8 code page, Win10/11
+        configure_file(packaging/windows/HybridIDE.rc.in ${CMAKE_CURRENT_BINARY_DIR}/HybridIDE.rc @ONLY)
+        set(IDE_PLATFORM_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/HybridIDE.rc)
+    endif()
     add_executable(HybridIDE
         src/main.cpp
         src/app/Application.cpp
-        ${IMGUI_BACKEND_SOURCES})
+        ${IMGUI_BACKEND_SOURCES}
+        ${IDE_PLATFORM_SOURCES})
     target_include_directories(HybridIDE PRIVATE ${imgui_SOURCE_DIR}/backends)
     target_link_libraries(HybridIDE PRIVATE ide_core glfw OpenGL::GL)
     if(WIN32)

@@ -1,0 +1,56 @@
+# Релизная сборка для Windows 10/11 x64 (MSVC, статический CRT).
+# Запускается при пуше тега v* или вручную; публикует zip в GitHub Releases.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $name = "HybridIDE-1.0-win64"
+          New-Item -ItemType Directory -Force $name | Out-Null
+          Copy-Item build/HybridIDE.exe $name/
+          Copy-Item -Recurse build/resources $name/resources
+          Copy-Item README.md, LICENSE $name/
+          Compress-Archive -Path $name -DestinationPath "$name.zip" -Force
+          (Get-FileHash "$name.zip" -Algorithm SHA256).Hash.ToLower() + "  $name.zip" | Out-File -Encoding ascii "$name.zip.sha256"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'v1.0' }}
+          name: HybridIDE 1.0
+          body: |
+            Первый релиз HybridIDE для Windows 10/11 x64.
+
+            * Распакуйте архив и запустите `HybridIDE.exe` (установка не нужна, VC++ Redistributable не требуется).
+            * Для языков установите серверы: clangd, rust-analyzer, pyright, gopls; отладчики — lldb-dap / gdb / debugpy / dlv.
+            * `--safe-mode` — запуск без шейдеров и звука.
+          files: |
+            HybridIDE-1.0-win64.zip
+            HybridIDE-1.0-win64.zip.sha256
