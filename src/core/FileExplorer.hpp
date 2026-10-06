@@ -1,9 +1,10 @@
 // =============================================================================
 //  FileExplorer.hpp — дерево решения/проекта с наблюдателем файловой системы
-//  (фоновый std::jthread сравнивает снимки std::filesystem), контекстными
+//  (фоновый ide::jthread сравнивает снимки std::filesystem), контекстными
 //  меню (Create/Rename/Delete/Build/Run/Clean) и инспектором свойств файла.
 // =============================================================================
 #pragma once
+#include "core/JThread.hpp"
 #include <imgui.h>
 
 #include <atomic>
@@ -49,7 +50,7 @@ private:
     std::filesystem::path root_;
     FsNode                tree_;
     std::mutex            treeMtx_;
-    std::jthread          watcher_;
+    ide::jthread          watcher_;
     std::atomic<bool>     dirty_{false};
     std::map<std::string, std::filesystem::file_time_type> snapshot_;
     std::filesystem::path selected_;

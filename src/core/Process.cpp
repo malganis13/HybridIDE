@@ -2,6 +2,7 @@
 //  Process.cpp — реализация для Win32 (CreateProcessW + анонимные pipe'ы)
 //  и POSIX (pipe + fork + execvp).
 // =============================================================================
+#include "core/JThread.hpp"
 #include "core/Process.hpp"
 
 #include <array>
@@ -162,9 +163,9 @@ bool Process::start(const ProcessOptions& opts, DataCallback onStdout, DataCallb
         while (ReadFile(h, buf.data(), (DWORD)buf.size(), &n, nullptr) && n > 0)
             if (cb) cb(std::string_view(buf.data(), n));
     };
-    outThread_ = std::jthread([=] { reader(outR, onStdout); });
-    if (errR) errThread_ = std::jthread([=] { reader(errR, onStderr); });
-    waitThread_ = std::jthread([this, onExit] { waitThread(onExit); });
+    outThread_ = ide::jthread([=] { reader(outR, onStdout); });
+    if (errR) errThread_ = ide::jthread([=] { reader(errR, onStderr); });
+    waitThread_ = ide::jthread([this, onExit] { waitThread(onExit); });
     return true;
 }
 
@@ -260,9 +261,9 @@ bool Process::start(const ProcessOptions& opts, DataCallback onStdout, DataCallb
             else break;
         }
     };
-    outThread_ = std::jthread([=, this] { reader(stdoutFd_, onStdout); });
-    if (stderrFd_ >= 0) errThread_ = std::jthread([=, this] { reader(stderrFd_, onStderr); });
-    waitThread_ = std::jthread([this, onExit] { waitThread(onExit); });
+    outThread_ = ide::jthread([=, this] { reader(stdoutFd_, onStdout); });
+    if (stderrFd_ >= 0) errThread_ = ide::jthread([=, this] { reader(stderrFd_, onStderr); });
+    waitThread_ = ide::jthread([this, onExit] { waitThread(onExit); });
     return true;
 }
 

@@ -4,6 +4,7 @@
 //  в фоновый пул, co_await switchToMain() — обратно в UI-поток.
 // =============================================================================
 #pragma once
+#include "core/JThread.hpp"
 #include "core/EventQueue.hpp"
 
 #include <algorithm>
@@ -13,7 +14,6 @@
 #include <exception>
 #include <functional>
 #include <mutex>
-#include <stop_token>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -28,10 +28,14 @@ public:
     explicit ThreadPool(unsigned threads = std::max(2u, std::thread::hardware_concurrency() / 2)) {
         workers_.reserve(threads);
         for (unsigned i = 0; i < threads; ++i) {
-            workers_.emplace_back([this](std::stop_token st) { workerLoop(st); });
+            workers_.emplace_back([this](ide::stop_token st) { workerLoop(st); });
         }
     }
     ~ThreadPool() {
+        {
+            std::lock_guard lk(mtx_);
+            stopping_ = true;
+        }
         for (auto& w : workers_) w.request_stop();
         cv_.notify_all();
         // std::jthread сам вызывает join() в деструкторе
@@ -51,13 +55,13 @@ public:
     }
 
 private:
-    void workerLoop(std::stop_token st) {
+    void workerLoop(ide::stop_token st) {
         while (!st.stop_requested()) {
             std::function<void()> job;
             {
                 std::unique_lock lk(mtx_);
-                cv_.wait(lk, st, [this] { return !jobs_.empty(); });
-                if (st.stop_requested()) return;
+                cv_.wait(lk, [this] { return stopping_ || !jobs_.empty(); });
+                if (stopping_ || st.stop_requested()) return;
                 if (jobs_.empty()) continue;
                 job = std::move(jobs_.front());
                 jobs_.pop_front();
@@ -67,9 +71,10 @@ private:
     }
 
     std::mutex                        mtx_;
-    std::condition_variable_any       cv_;
+    std::condition_variable           cv_;
+    bool                              stopping_ = false;
     std::deque<std::function<void()>> jobs_;
-    std::vector<std::jthread>         workers_;
+    std::vector<ide::jthread>         workers_;
 };
 
 // -----------------------------------------------------------------------------

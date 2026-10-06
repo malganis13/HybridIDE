@@ -1,6 +1,7 @@
 // =============================================================================
 //  TerminalEngine.cpp — PTY и VT-эмулятор
 // =============================================================================
+#include "core/JThread.hpp"
 #include <imgui_internal.h>   // ImTextCharFromUtf8 / ImTextCharToUtf8
 #include "core/TerminalEngine.hpp"
 
@@ -233,7 +234,7 @@ bool TerminalSession::start(const std::filesystem::path& cwd, int cols, int rows
     hPC_ = hpc; hIn_ = inW; hOut_ = outR; hProc_ = pi.hProcess;
     screen.resize(cols, rows);
     running_ = true;
-    reader_ = std::jthread([this](std::stop_token st) {
+    reader_ = ide::jthread([this](ide::stop_token st) {
         std::array<char, 4096> buf{};
         DWORD n = 0;
         while (!st.stop_requested() && ReadFile((HANDLE)hOut_, buf.data(), (DWORD)buf.size(), &n, nullptr) && n > 0) {
@@ -295,7 +296,7 @@ bool TerminalSession::start(const std::filesystem::path& cwd, int cols, int rows
     masterFd_ = master; pid_ = pid;
     screen.resize(cols, rows);
     running_ = true;
-    reader_ = std::jthread([this](std::stop_token st) {
+    reader_ = ide::jthread([this](ide::stop_token st) {
         std::array<char, 4096> buf{};
         while (!st.stop_requested()) {
             ssize_t n = ::read(masterFd_, buf.data(), buf.size());

@@ -7,6 +7,7 @@
 //  или вызовы NVML никогда не задерживали кадр. Результаты складываются в
 //  кольцевые буферы под мьютексом; render() только копирует и рисует.
 // ============================================================================
+#include "core/JThread.hpp"
 #include "platform/SystemInfo.hpp"
 
 #include <mutex>
@@ -40,14 +41,14 @@ public:
     [[nodiscard]] SystemSample last() const { std::scoped_lock lk(mtx_); return last_; }
 
 private:
-    void worker(std::stop_token st);
+    void worker(ide::stop_token st);
 
     mutable std::mutex mtx_;
     SystemSample       last_;
     ScrollingSeries    cpu_, ram_, gpu_, rss_;
     float              t_ = 0.f;
     std::string        gpuSource_;
-    std::jthread       thread_;                    // объявлен последним — стартует после инициализации полей
+    ide::jthread       thread_;                    // объявлен последним — стартует после инициализации полей
 };
 
 } // namespace ide

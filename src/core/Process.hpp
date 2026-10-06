@@ -4,6 +4,7 @@
 //  систем сборки (cmake/cargo/go/npm) и скриптов установки тулчейнов.
 // =============================================================================
 #pragma once
+#include "core/JThread.hpp"
 #include <atomic>
 #include <filesystem>
 #include <functional>
@@ -73,7 +74,7 @@ private:
     std::atomic<bool> running_{false};
     std::mutex        writeMtx_;
     std::string       lastError_;
-    std::jthread      outThread_, errThread_, waitThread_;
+    ide::jthread      outThread_, errThread_, waitThread_;
 };
 
 // Разбор командной строки "cmake --build build" -> {"cmake","--build","build"}

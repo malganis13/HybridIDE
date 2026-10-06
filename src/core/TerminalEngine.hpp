@@ -5,6 +5,7 @@
 //  Windows: ConPTY (CreatePseudoConsole, Win10 1809+) — современная замена winpty.
 // =============================================================================
 #pragma once
+#include "core/JThread.hpp"
 #include <imgui.h>
 
 #include <atomic>
@@ -73,7 +74,7 @@ public:
 
 private:
     std::atomic<bool> running_{false};
-    std::jthread      reader_;
+    ide::jthread      reader_;
 #ifdef _WIN32
     void* hPC_ = nullptr; void* hIn_ = nullptr; void* hOut_ = nullptr; void* hProc_ = nullptr;
 #else

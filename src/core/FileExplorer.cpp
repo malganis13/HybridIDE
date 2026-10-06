@@ -1,6 +1,7 @@
 // =============================================================================
 //  FileExplorer.cpp
 // =============================================================================
+#include "core/JThread.hpp"
 #include "core/FileExplorer.hpp"
 
 #include "core/EventQueue.hpp"
@@ -59,7 +60,7 @@ void FileExplorer::rescan() {
 void FileExplorer::startWatcher() {
     // Polling-наблюдатель: переносимый (Windows/Linux/macOS) и не требующий
     // inotify/ReadDirectoryChangesW; интервал 1 с, сравнение mtime снимков.
-    watcher_ = std::jthread([this, root = root_](std::stop_token st) {
+    watcher_ = ide::jthread([this, root = root_](ide::stop_token st) {
         auto takeSnapshot = [&](std::map<std::string, fs::file_time_type>& snap) {
             std::error_code ec;
             for (auto it = fs::recursive_directory_iterator(root, fs::directory_options::skip_permission_denied, ec);

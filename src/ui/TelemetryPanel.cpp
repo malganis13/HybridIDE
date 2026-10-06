@@ -1,6 +1,7 @@
 // ============================================================================
 //  TelemetryPanel.cpp
 // ============================================================================
+#include "core/JThread.hpp"
 #include "ui/TelemetryPanel.hpp"
 #include "ui/Localization.hpp"
 
@@ -14,14 +15,14 @@
 namespace ide {
 
 TelemetryPanel::TelemetryPanel()
-    : thread_([this](std::stop_token st) { worker(st); }) {}
+    : thread_([this](ide::stop_token st) { worker(st); }) {}
 
 TelemetryPanel::~TelemetryPanel() {
     thread_.request_stop();
     if (thread_.joinable()) thread_.join();
 }
 
-void TelemetryPanel::worker(std::stop_token st) {
+void TelemetryPanel::worker(ide::stop_token st) {
     SystemInfo info;                               // NVML и т.п. живут только в этом потоке
     {
         std::scoped_lock lk(mtx_);
