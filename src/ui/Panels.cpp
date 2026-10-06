@@ -45,7 +45,7 @@ fs::path extensionDir(const std::string& fullName) {
 bool safeRelativePath(const std::string& p) {
     if (p.empty() || p[0] == '/' || p[0] == '\\' || p.find(':') != std::string::npos) return false;
     fs::path rel(p);
-    for (auto& part : rel) if (part == "..") return false;
+    for (const auto& part : rel) if (part == "..") return false;
     return true;
 }
 } // namespace
