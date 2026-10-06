@@ -120,7 +120,8 @@ if(IDE_BUILD_APP)
     if(WIN32)
         # Версия файла, иконка-манифест: PerMonitorV2 DPI, UTF-8 code page, Win10/11
         configure_file(packaging/windows/HybridIDE.rc.in ${CMAKE_CURRENT_BINARY_DIR}/HybridIDE.rc @ONLY)
-        set(IDE_PLATFORM_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/HybridIDE.rc)
+        set(IDE_PLATFORM_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/HybridIDE.rc
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/packaging/windows/HybridIDE.manifest)
     endif()
     add_executable(HybridIDE
         src/main.cpp
