@@ -1,0 +1,271 @@
+{
+  "name": "Visual Studio",
+  "description": "Раскладка по умолчанию HybridIDE в стиле Visual Studio. Файл можно редактировать: ключ — сочетание (1–2 аккорда через пробел).",
+  "bindings": [
+    {
+      "command": "file.new",
+      "when": "global",
+      "key": "Ctrl+N"
+    },
+    {
+      "command": "file.open",
+      "when": "global",
+      "key": "Ctrl+O"
+    },
+    {
+      "command": "file.openFolder",
+      "when": "global",
+      "key": "Ctrl+Shift+Alt+O"
+    },
+    {
+      "command": "file.save",
+      "when": "editor",
+      "key": "Ctrl+S"
+    },
+    {
+      "command": "file.saveAll",
+      "when": "global",
+      "key": "Ctrl+Shift+S"
+    },
+    {
+      "command": "file.close",
+      "when": "editor",
+      "key": "Ctrl+F4"
+    },
+    {
+      "command": "project.new",
+      "when": "global",
+      "key": "Ctrl+Shift+N"
+    },
+    {
+      "command": "app.quit",
+      "when": "global",
+      "key": "Alt+F4"
+    },
+    {
+      "command": "view.commandPalette",
+      "when": "global",
+      "key": "Ctrl+Q"
+    },
+    {
+      "command": "view.explorer",
+      "when": "global",
+      "key": "Ctrl+Alt+L"
+    },
+    {
+      "command": "view.git",
+      "when": "global",
+      "key": "Ctrl+0 Ctrl+G"
+    },
+    {
+      "command": "view.terminal",
+      "when": "global",
+      "key": "Ctrl+`"
+    },
+    {
+      "command": "view.problems",
+      "when": "global",
+      "key": "Ctrl+\\ E"
+    },
+    {
+      "command": "view.output",
+      "when": "global",
+      "key": "Ctrl+Alt+O"
+    },
+    {
+      "command": "view.telemetry",
+      "when": "global",
+      "key": "Ctrl+Alt+F2"
+    },
+    {
+      "command": "view.settings",
+      "when": "global",
+      "key": "Ctrl+,"
+    },
+    {
+      "command": "view.keybindings",
+      "when": "global",
+      "key": "Ctrl+K Ctrl+S"
+    },
+    {
+      "command": "view.debug",
+      "when": "global",
+      "key": "Ctrl+Alt+D"
+    },
+    {
+      "command": "view.extensions",
+      "when": "global",
+      "key": "Ctrl+Shift+X"
+    },
+    {
+      "command": "theme.next",
+      "when": "global",
+      "key": "Ctrl+K Ctrl+T"
+    },
+    {
+      "command": "language.toggle",
+      "when": "global",
+      "key": "Ctrl+Alt+Shift+L"
+    },
+    {
+      "command": "build.build",
+      "when": "global",
+      "key": "Ctrl+Shift+B"
+    },
+    {
+      "command": "build.run",
+      "when": "global",
+      "key": "Ctrl+F5"
+    },
+    {
+      "command": "build.cancel",
+      "when": "global",
+      "key": "Ctrl+Pause"
+    },
+    {
+      "command": "debug.start",
+      "when": "global",
+      "key": "F5"
+    },
+    {
+      "command": "debug.stop",
+      "when": "global",
+      "key": "Shift+F5"
+    },
+    {
+      "command": "debug.restart",
+      "when": "global",
+      "key": "Ctrl+Shift+F5"
+    },
+    {
+      "command": "debug.pause",
+      "when": "global",
+      "key": "Ctrl+Alt+Pause"
+    },
+    {
+      "command": "debug.stepOver",
+      "when": "global",
+      "key": "F10"
+    },
+    {
+      "command": "debug.stepInto",
+      "when": "global",
+      "key": "F11"
+    },
+    {
+      "command": "debug.stepOut",
+      "when": "global",
+      "key": "Shift+F11"
+    },
+    {
+      "command": "editor.toggleBreakpoint",
+      "when": "editor",
+      "key": "F9"
+    },
+    {
+      "command": "editor.undo",
+      "when": "editor",
+      "key": "Ctrl+Z"
+    },
+    {
+      "command": "editor.redo",
+      "when": "editor",
+      "key": "Ctrl+Y"
+    },
+    {
+      "command": "editor.copy",
+      "when": "editor",
+      "key": "Ctrl+C"
+    },
+    {
+      "command": "editor.cut",
+      "when": "editor",
+      "key": "Ctrl+X"
+    },
+    {
+      "command": "editor.paste",
+      "when": "editor",
+      "key": "Ctrl+V"
+    },
+    {
+      "command": "editor.selectAll",
+      "when": "editor",
+      "key": "Ctrl+A"
+    },
+    {
+      "command": "editor.find",
+      "when": "editor",
+      "key": "Ctrl+F"
+    },
+    {
+      "command": "editor.addNextOccurrence",
+      "when": "editor",
+      "key": "Shift+Alt+."
+    },
+    {
+      "command": "editor.addCursorAbove",
+      "when": "editor",
+      "key": "Shift+Alt+Up"
+    },
+    {
+      "command": "editor.addCursorBelow",
+      "when": "editor",
+      "key": "Shift+Alt+Down"
+    },
+    {
+      "command": "editor.toggleComment",
+      "when": "editor",
+      "key": "Ctrl+K Ctrl+C"
+    },
+    {
+      "command": "editor.toggleComment",
+      "when": "editor",
+      "key": "Ctrl+K Ctrl+U"
+    },
+    {
+      "command": "editor.duplicateLine",
+      "when": "editor",
+      "key": "Ctrl+D"
+    },
+    {
+      "command": "editor.toggleFold",
+      "when": "editor",
+      "key": "Ctrl+M Ctrl+M"
+    },
+    {
+      "command": "editor.foldAll",
+      "when": "editor",
+      "key": "Ctrl+M Ctrl+O"
+    },
+    {
+      "command": "editor.unfoldAll",
+      "when": "editor",
+      "key": "Ctrl+M Ctrl+L"
+    },
+    {
+      "command": "editor.triggerCompletion",
+      "when": "editor",
+      "key": "Ctrl+J"
+    },
+    {
+      "command": "editor.triggerCompletion",
+      "when": "editor",
+      "key": "Ctrl+Space"
+    },
+    {
+      "command": "editor.goToDefinition",
+      "when": "editor",
+      "key": "F12"
+    },
+    {
+      "command": "editor.zoomIn",
+      "when": "global",
+      "key": "Ctrl+Shift+."
+    },
+    {
+      "command": "editor.zoomOut",
+      "when": "global",
+      "key": "Ctrl+Shift+,"
+    }
+  ]
+}

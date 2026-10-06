@@ -1,0 +1,12 @@
+build/
+build-*/
+out/
+cmake-build-*/
+.vs/
+.vscode/
+.idea/
+*.user
+compile_commands.json
+.cache/
+imgui.ini
+.ide_workspace.json
